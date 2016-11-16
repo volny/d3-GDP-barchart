@@ -1,10 +1,10 @@
 import './style.scss'
-import { scaleLinear, scaleTime, timeParse, line, select, json, extent, max, axisBottom, axisLeft } from 'd3'
+import { scaleLinear, scaleTime, timeParse, line, select, json, extent, max, axisBottom, axisLeft, timeYear, timeFormat } from 'd3'
 
 const FCC_URL = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
 
 const
-  margin = {top: 20, right: 20, bottom: 30, left: 60},
+  margin = {top: 20, right: 20, bottom: 50, left: 90},
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom
 
@@ -43,10 +43,33 @@ json(FCC_URL, (error, response) => {
   svg.append('g')
     .style('font', '15px Helvetica')
     .attr('transform', `translate(0, ${height})`)
-    .call(axisBottom(x))
+    .call(axisBottom(x)
+      .ticks(timeYear.every(5))
+      .tickFormat(timeFormat("%Y"))
+      )
+
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('transform', `translate(0, ${height + margin.bottom})`)
+    .style("text-anchor", "middle")
+    .text('Date');
 
   svg.append('g')
     .style('font', '15px Helvetica')
     .call(axisLeft(y))
+
+  svg.append('text')
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - height / 2)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text('Gross Domestic Product')
+
+  svg.append('text')
+    .style('font-size', '20px')
+    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
+    .attr('text-anchor', 'middle')
+    .text('US Gross Domestic Product by Quarter')
 })
 
