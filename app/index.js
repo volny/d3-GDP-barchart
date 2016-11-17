@@ -4,7 +4,7 @@ import { scaleLinear, scaleTime, timeParse, line, select, json, extent, max, axi
 const FCC_URL = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
 
 const
-  margin = {top: 20, right: 20, bottom: 50, left: 90},
+  margin = {top: 40, right: 20, bottom: 50, left: 90},
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom
 
@@ -16,30 +16,52 @@ const svg = select('#app')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 json(FCC_URL, (error, response) => {
-  const data = response.data
-  const parseTime = timeParse("%Y-%m-%d")
-  const
-    x = scaleTime().range([0, width]),
-    y = scaleLinear().range([height, 0])
-  const valueline = line()
-   .x((row) => x(row[0]))
-   .y((row) => y(row[1]))
-
   if (error) throw error
 
+  const data = response.data
+  const parseTime = timeParse("%Y-%m-%d")
   data.forEach((row) => {
     row[0] = parseTime(row[0])
     row[1] = +row[1]
   })
 
+  // SCALES
+  const
+    x = scaleTime().range([0, width]),
+    y = scaleLinear().range([height, 0])
   x.domain(extent(data, (row) => row[0]))
   y.domain([0, max(data, (row) => row[1])])
 
-  svg.append('path')
-    .data([data])
-    .attr('class', 'line')
-    .attr('d', valueline)
+// LINEGRAPH
+//   const valueline = line()
+//    .x((row) => x(row[0]))
+//    .y((row) => y(row[1]))
 
+//  svg.append('path')
+//    .data([data])
+//    .attr('class', 'line')
+//    .attr('d', valueline)
+//
+
+//  SCATTERPLOT
+//  svg.selectAll("dot")
+//    .data(data)
+//    .enter().append("circle")
+//    .attr('r', 1)
+//    .attr('cx', (row) => x(row[0]))
+//    .attr('cy', (row) => y(row[1]))
+
+//  BARCHART
+  svg.selectAll(".bar")
+    .data(data)
+    .enter().append('rect')
+    .attr('class', 'bar')
+    .attr('x', (row) => x(row[0]))
+    .attr('width', (row) => width - x(row[0]))
+    .attr('y', (row) => y(row[1]))
+    .attr('height', (row) => height - y(row[1]))
+
+  // AXIS AND ANNOTATION
   svg.append('g')
     .style('font', '15px Helvetica')
     .attr('transform', `translate(0, ${height})`)
