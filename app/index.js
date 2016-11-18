@@ -15,11 +15,6 @@ const svg = select('#app')
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-// TOOLTIP
-const tooltip = select('#app').append('div')
-  .attr('class', 'tooltip')
-  .style('opacity', 0)
-
 json(FCC_URL, (error, response) => {
   if (error) throw error
 
@@ -28,6 +23,11 @@ json(FCC_URL, (error, response) => {
     row[0] = timeParse('%Y-%m-%d')(row[0])
     row[1] = +row[1]
   })
+
+  // TOOLTIP
+  const tooltip = select('#app').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0)
 
   // SCALES
   const
@@ -41,12 +41,12 @@ json(FCC_URL, (error, response) => {
 //   const valueline = line()
 //    .x((row) => x(row[0]))
 //    .y((row) => y(row[1]))
-
+//
 //  svg.append('path')
 //    .data([data])
 //    .attr('class', 'line')
 //    .attr('d', valueline)
-//
+
 
 //  SCATTERPLOT
 //  svg.selectAll("dot")
@@ -83,24 +83,6 @@ json(FCC_URL, (error, response) => {
         .style('opacity', 0)
     })
 
-//
-//       .on("mouseover", function(d) {		
-//            div.transition()		
-//                .duration(200)		
-//                .style("opacity", .9);		
-//            div	.html(formatTime(d.date) + "<br/>"  + d.close)	
-//                .style("left", (d3.event.pageX) + "px")		
-//
-//                .style("top", (d3.event.pageY - 28) + "px");	
-//            })					
-//        .on("mouseout", function(d) {		
-//            div.transition()		
-//                .duration(500)		
-//                .style("opacity", 0);	
-//
-//
-
-
   // AXIS AND ANNOTATION
   svg.append('g')
     .style('font', '15px Helvetica')
@@ -110,30 +92,28 @@ json(FCC_URL, (error, response) => {
       .tickFormat(timeFormat("%Y"))
       )
 
-//  svg.append('text')
-//    .attr('x', width / 2)
-//    .attr('transform', `translate(0, ${height + margin.bottom})`)
-//    .style("text-anchor", "middle")
-//    .text('Date');
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('transform', `translate(0, ${height + margin.bottom})`)
+    .style("text-anchor", "middle")
+    .text('Date');
 
   svg.append('g')
     .style('font', '15px Helvetica')
     .call(axisLeft(y))
 
-//  svg.append('text')
-//    .attr("transform", "rotate(-90)")
-//    .attr("y", 0 - margin.left)
-//    .attr("x", 0 - height / 2)
-//    .attr("dy", "1em")
-//    .style("text-anchor", "middle")
-//    .text('GDP (Billions of Dollars)')
-//
-//  svg.append('text')
-//    .style('font-size', '20px')
-//    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
-//    .attr('text-anchor', 'middle')
-//    .text('US Gross Domestic Product by Quarter')
+  svg.append('text')
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - height / 2)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text('GDP (Billions of Dollars)')
 
-
+  svg.append('text')
+    .style('font-size', '20px')
+    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
+    .attr('text-anchor', 'middle')
+    .text('US Gross Domestic Product by Quarter')
 })
 

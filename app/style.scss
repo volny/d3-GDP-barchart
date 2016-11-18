@@ -20,3 +20,14 @@ body {
   fill: #7f8c8d;
 }
 
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font-size: 12px;
+    background: #bdc3c7;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
