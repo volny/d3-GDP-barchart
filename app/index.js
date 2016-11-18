@@ -29,6 +29,7 @@ json(FCC_URL, (error, response) => {
   const
     x = scaleTime().range([0, width]),
     y = scaleLinear().range([height, 0])
+  // d3.extent returns the min and max val in arr
   x.domain(extent(data, (row) => row[0]))
   y.domain([0, max(data, (row) => row[1])])
 
@@ -70,28 +71,28 @@ json(FCC_URL, (error, response) => {
       .tickFormat(timeFormat("%Y"))
       )
 
-  svg.append('text')
-    .attr('x', width / 2)
-    .attr('transform', `translate(0, ${height + margin.bottom})`)
-    .style("text-anchor", "middle")
-    .text('Date');
+//  svg.append('text')
+//    .attr('x', width / 2)
+//    .attr('transform', `translate(0, ${height + margin.bottom})`)
+//    .style("text-anchor", "middle")
+//    .text('Date');
 
   svg.append('g')
     .style('font', '15px Helvetica')
     .call(axisLeft(y))
 
-  svg.append('text')
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - height / 2)
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text('Gross Domestic Product')
-
-  svg.append('text')
-    .style('font-size', '20px')
-    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
-    .attr('text-anchor', 'middle')
-    .text('US Gross Domestic Product by Quarter')
+//  svg.append('text')
+//    .attr("transform", "rotate(-90)")
+//    .attr("y", 0 - margin.left)
+//    .attr("x", 0 - height / 2)
+//    .attr("dy", "1em")
+//    .style("text-anchor", "middle")
+//    .text('GDP (Billions of Dollars)')
+//
+//  svg.append('text')
+//    .style('font-size', '20px')
+//    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
+//    .attr('text-anchor', 'middle')
+//    .text('US Gross Domestic Product by Quarter')
 })
 
