@@ -41,7 +41,6 @@ json(FCC_URL, (error, response) => {
 //   const valueline = line()
 //    .x((row) => x(row[0]))
 //    .y((row) => y(row[1]))
-//
 //  svg.append('path')
 //    .data([data])
 //    .attr('class', 'line')
@@ -73,7 +72,7 @@ json(FCC_URL, (error, response) => {
           <span> ${timeFormat('%B %Y')(row[0])}</span>
           </br>
           <strong>GDP:</strong>
-          <span style:"color: green"> ${row[1]}</span>`)
+          <span> ${row[1]}</span>`)
         .style('left', `${event.pageX}px`)
         .style('top', `${event.pageY - 28}px`)
     })
