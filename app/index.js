@@ -1,5 +1,5 @@
 import './style.scss'
-import { scaleLinear, scaleTime, timeParse, line, select, json, extent, max, axisBottom, axisLeft, timeYear, timeFormat } from 'd3'
+import { scaleLinear, scaleTime, timeParse, line, select, json, extent, max, axisBottom, axisLeft, timeYear, timeFormat, event } from 'd3'
 
 const FCC_URL = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
 
@@ -15,13 +15,17 @@ const svg = select('#app')
   .append('g')
   .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
+// TOOLTIP
+const tooltip = select('#app').append('div')
+  .attr('class', 'tooltip')
+  .style('opacity', 0)
+
 json(FCC_URL, (error, response) => {
   if (error) throw error
 
   const data = response.data
-  const parseTime = timeParse("%Y-%m-%d")
   data.forEach((row) => {
-    row[0] = parseTime(row[0])
+    row[0] = timeParse('%Y-%m-%d')(row[0])
     row[1] = +row[1]
   })
 
@@ -61,6 +65,41 @@ json(FCC_URL, (error, response) => {
     .attr('width', (row) => width - x(row[0]))
     .attr('y', (row) => y(row[1]))
     .attr('height', (row) => height - y(row[1]))
+    .on('mouseover', (row) => {
+      tooltip.transition()
+        .duration(200)
+        .style('opacity', .9)
+      tooltip.html(`<strong>Quarter:</strong>
+          <span> ${timeFormat('%B %Y')(row[0])}</span>
+          </br>
+          <strong>GDP:</strong>
+          <span style:"color: green"> ${row[1]}</span>`)
+        .style('left', `${event.pageX}px`)
+        .style('top', `${event.pageY - 28}px`)
+    })
+    .on('mouseout', (row) => {
+      tooltip.transition()
+        .duration(500)
+        .style('opacity', 0)
+    })
+
+//
+//       .on("mouseover", function(d) {		
+//            div.transition()		
+//                .duration(200)		
+//                .style("opacity", .9);		
+//            div	.html(formatTime(d.date) + "<br/>"  + d.close)	
+//                .style("left", (d3.event.pageX) + "px")		
+//
+//                .style("top", (d3.event.pageY - 28) + "px");	
+//            })					
+//        .on("mouseout", function(d) {		
+//            div.transition()		
+//                .duration(500)		
+//                .style("opacity", 0);	
+//
+//
+
 
   // AXIS AND ANNOTATION
   svg.append('g')
@@ -94,5 +133,7 @@ json(FCC_URL, (error, response) => {
 //    .attr('transform', `translate(${width / 2}, ${margin.top / 2})`)
 //    .attr('text-anchor', 'middle')
 //    .text('US Gross Domestic Product by Quarter')
+
+
 })
 
